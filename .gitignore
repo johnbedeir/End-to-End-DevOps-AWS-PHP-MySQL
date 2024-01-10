@@ -1,0 +1,6 @@
+.history
+.env
+db.sql
+composer.*
+vendor
+src
