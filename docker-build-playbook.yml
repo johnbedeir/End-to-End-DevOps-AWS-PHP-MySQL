@@ -3,19 +3,19 @@
   hosts: localhost
   tasks:
     - name: stop running container
-      command: docker stop php-cont
+      command: docker stop task-mgm-system-app
       ignore_errors: yes
 
     - name: remove stopped container
-      command: docker rm php-cont
+      command: docker rm task-mgm-system-app
       ignore_errors: yes
 
     - name: remove used image
-      command: docker rmi task-php
+      command: docker rmi task-mgm-img
       ignore_errors: yes
 
     - name: build docker image from dockerfile
-      command: docker build -t task-php task-management-system/
+      command: docker build -t task-mgm-img task-management-system/
 
     - name: run container from image
-      command: docker run -d --name php-cont --network=host task-php 
+      command: docker run -d --name task-mgm-system-app --network=host task-mgm-img
