@@ -1,7 +1,3 @@
-Creating a README.md file for your "End to End DevOps project" involving PHP, MySQL, and Apache2 on a Linux machine involves providing clear instructions on how to set up and run the application. Here's a template that you can use:
-
----
-
 # End to End DevOps Project - PHP & MySQL
 
 This project demonstrates an end-to-end setup for a PHP and MySQL application, leveraging Apache2 as the web server. Follow these instructions to run the application locally on your Linux machine.
