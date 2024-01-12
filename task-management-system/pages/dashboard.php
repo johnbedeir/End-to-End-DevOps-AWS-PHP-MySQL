@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // User's username for the welcome message
-$username = $_SESSION['user'];
+$username = $_SESSION['user_id'];
 
 // Fetch tasks from the database
 $stmt = $conn->prepare("SELECT id, title, description FROM tasks WHERE user_id = ? ORDER BY id DESC"); // Make sure 'user_id' is the correct column name

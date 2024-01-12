@@ -72,5 +72,4 @@ function editTask($taskId, $newTask, $newDueDate) {
     // Function to edit an existing task. Add your code here.
 }
 
-// Other necessary functions...
 ?>

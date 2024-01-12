@@ -26,16 +26,17 @@ RUN apt-get update && apt-get install -y\
     && docker-php-ext-install zip \
     && docker-php-source delete
 
-# Enable Apache rewrite module for clean URLs
-RUN a2enmod rewrite
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN chown -R www-data:www-data /var/www/html \
     && a2enmod rewrite
 
+RUN composer install --no-dev --optimize-autoloader
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 # Expose port 80 for Apache
 EXPOSE 80
 
 # Start Apache in the foreground
-# CMD ["apache2-foreground"]
+CMD ["apache2-foreground"]
