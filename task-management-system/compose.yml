@@ -1,0 +1,78 @@
+version: '3.1'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: frontend-container
+    networks:
+      - app-network
+      
+  users-service:
+    build:
+      context: .
+      dockerfile: users.Dockerfile
+    container_name: users-container
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=password
+      - DB_DATABASE=task_manager
+    volumes:
+      - db_data
+    networks:
+      - app-network
+    depends_on:
+      db: 
+        condition: service_healthy
+
+  logout-service:
+    build:
+      context: .
+      dockerfile: logout.Dockerfile
+    container_name: logout-container
+    networks:
+      - app-network
+
+  db:
+    image: mysql:5.7
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: task_manager
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysql -h 'localhost' -u 'root' -p'password' -e 'SELECT 1'",
+        ]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+    networks:
+      - app-network
+    ports:
+      - "3306:3306"
+
+  proxy:
+    image: nginx:latest
+    container_name: reverse-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - users-service
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  db_data:
