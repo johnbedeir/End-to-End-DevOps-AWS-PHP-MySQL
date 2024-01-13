@@ -122,3 +122,62 @@ http {
         }
 ...................................................................
 ```
+
+## 3. Deploying the Application on Minikube
+
+This guide will walk you through the process of deploying the application on Minikube, including the frontend, logout and users-services, database, and Ingress for routing external traffic.
+
+### Prerequisites
+
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/) installed on your machine.
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) command-line tool installed and configured.
+
+### Steps to Deploy
+
+1. **Start Minikube:**
+
+   Begin by starting your Minikube cluster:
+
+   ```bash
+   minikube start
+   ```
+
+2. **Enable Ingress Controller:**
+
+   Enable the Ingress controller in Minikube:
+
+   ```bash
+   minikube addons enable ingress
+   ```
+
+3. **Deploy all k8s files:**
+
+   This will create the deployment and service for each of the services, and `PVC` for the database:
+
+   - frontend-service: which contains the home page of the application
+   - users-service: which contains the users login and registration page with the dashboard after login.
+   - logout-service: which contains the logout page
+   - database: deploy mysql where we have the data of the users stored.
+   - ingress: route the traffic between the deployed services
+
+   ```bash
+   kubectl apply -n NAMESPACE -f k8s/
+   ```
+
+4. **Access the Application:**
+
+   Get the Minikube IP to access your application:
+
+   ```bash
+   minikube ip
+   ```
+
+   Then, navigate to this IP address in your web browser. The Ingress controller will route the traffic to the appropriate services based on the path.
+
+5. **Delete Deployment:**
+
+   To stop the application and free resources, you can delete the deployments and services:
+
+   ```bash
+   kubectl delete -f path/to/deployment-or-service.yaml
+   ```
