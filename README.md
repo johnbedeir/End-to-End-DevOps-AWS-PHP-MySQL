@@ -77,49 +77,65 @@ Sure, I can help you with that. Here's a section you can add to your README.md f
 
 ---
 
-## 2. Running the Application in a Docker Container
+## 2. Running the Application using Docker Compose
 
-This project includes an Ansible playbook that automates the process of building and running a Docker container for the application. To run the container and enable it to communicate with your local SQL server, follow these steps:
+This project is configured to run as a set of microservices using Docker Compose, which includes services for the frontend, user management (login, registration, and dashboard), a logout service, and a MySQL database. An Nginx service is used as a reverse proxy to route requests to the appropriate microservice based on the URL path.
 
 ### Prerequisites
 
 - Docker
-- Ansible
-- Make sure MySQL is running locally and accessible.
+- Docker Compose
 
-### Using the Ansible Playbook
+### Build and Start the Services:
 
-1. **Run the Ansible Playbook:** This playbook will build the Docker image and run the container with the necessary configurations. Navigate to the directory containing the playbook and run:
+Use Docker Compose to build and start the services. This might take some time initially as Docker needs to build the images for each service.
 
-   ```bash
-   ansible-playbook docker-build-playbook.yml
-   ```
+```bash
+docker-compose up --build
+```
 
-   This playbook performs the following tasks:
+The --build flag ensures that Docker Compose builds the images before starting the containers.
 
-   - Stops any currently running container named `task-mgm-system-app`.
-   - Removes the stopped container and its image.
-   - Builds a new Docker image from the Dockerfile located in the `task-management-system/` directory.
-   - Runs a new container from this image with the name `task-mgm-system-app`.
+### Accessing the Application:
 
-2. **Verify Container Execution:** After the playbook execution, ensure the Docker container is running:
+Once all services are up and running, you can access the application by opening a web browser and navigating to:
 
-   ```bash
-   docker ps
-   ```
+```
+http://localhost
+```
 
-### Connecting to Local SQL Server
+This will take you to the frontend service. The Nginx reverse proxy routes requests to the appropriate microservice based on the URL path:
 
-- The container is configured to use `--network=host`, which means it shares the network with the host machine. Therefore, it can directly communicate with services running on the host, such as your local SQL server.
-- If your SQL server is listening on `localhost`, `127.0.0.1` the application within the Docker container should be able to connect to it using `localhost` or the local IP address as the host address.
+- `/` routes to the frontend service.
+- `/pages/login` routes to the user login page provided by the users-service.
+- `/pages/register` routes to the user registration page provided by the users-service.
+- `/pages/logout` routes to the logout service.
+- `/pages/dashboard` routes to the user dashboard provided by the users-service.
 
-### Troubleshooting
+```
+http {
+    server {
+        listen 80;
 
-- If the container fails to connect to the local SQL server, verify that the SQL server is configured to accept connections from localhost `/etc/mysql/mysql.conf.d/mysqld.cnf`
+        location / {
+            proxy_pass http://frontend:80/;
+        }
 
-  ```
-  bind-address: 127.0.0.1
-  ```
+        location /pages/login {
+            proxy_pass http://users-service:80;
+        }
 
-- Ensure that any firewalls or security groups are configured to allow traffic on the SQL server's port.
-- Check Docker and SQL server logs for any error messages that might provide more insight.
+        location /pages/register {
+            proxy_pass http://users-service:80;
+        }
+
+        location /pages/logout {
+            proxy_pass http://logout-service:80;
+        }
+
+        location /pages/dashboard {
+            proxy_pass http://users-service:80;
+        }
+    }
+}
+```
