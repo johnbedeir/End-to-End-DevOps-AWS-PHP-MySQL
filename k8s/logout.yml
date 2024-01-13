@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logout
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: logout
+  template:
+    metadata:
+      labels:
+        app: logout
+    spec:
+      containers:
+      - name: logout
+        image: triple3a/tms-logout:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logout-service
+spec:
+  selector:
+    app: logout
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

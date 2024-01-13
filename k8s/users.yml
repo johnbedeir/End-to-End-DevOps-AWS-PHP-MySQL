@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: users-service
+  template:
+    metadata:
+      labels:
+        app: users-service
+    spec:
+      containers:
+      - name: users-service
+        image: triple3a/tms-users:latest
+        ports:
+        - containerPort: 80
+        env:
+          - name: DB_HOST
+            value: mysql-service
+          - name: DB_USER
+            value: root
+          - name: DB_PASS
+            value: password
+          - name: DB_NAME
+            value: task_manager
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+spec:
+  selector:
+    app: users-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
