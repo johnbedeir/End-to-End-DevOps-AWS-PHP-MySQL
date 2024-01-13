@@ -71,11 +71,7 @@ If you encounter any issues, ensure that:
 - PHP version compatibility is checked.
 - File permissions are set correctly in the Apache directory.
 
-For detailed logs, check Apache's error log usually located at `/var/log/apache2/error.log`.
-
-Sure, I can help you with that. Here's a section you can add to your README.md file to guide users on how to run the Docker container and communicate with a local SQL server using the `--network=host` option. This assumes that the users have Docker installed on their system.
-
----
+## For detailed logs, check Apache's error log usually located at `/var/log/apache2/error.log`.
 
 ## 2. Running the Application using Docker Compose
 
