@@ -120,18 +120,5 @@ http {
         location /pages/login {
             proxy_pass http://users-service:80;
         }
-
-        location /pages/register {
-            proxy_pass http://users-service:80;
-        }
-
-        location /pages/logout {
-            proxy_pass http://logout-service:80;
-        }
-
-        location /pages/dashboard {
-            proxy_pass http://users-service:80;
-        }
-    }
-}
+...................................................................
 ```
