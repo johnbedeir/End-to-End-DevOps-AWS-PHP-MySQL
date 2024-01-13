@@ -18,7 +18,7 @@ if (!isset($_SESSION['user_id'])) {
 $username = $_SESSION['user_id'];
 
 // Fetch tasks from the database
-$stmt = $conn->prepare("SELECT id, title, description FROM tasks WHERE user_id = ? ORDER BY id DESC"); // Make sure 'user_id' is the correct column name
+$stmt = $conn->prepare("SELECT id, task FROM tasks WHERE user_id = ? ORDER BY id DESC");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
