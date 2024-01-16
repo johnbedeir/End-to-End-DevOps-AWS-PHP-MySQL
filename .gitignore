@@ -4,3 +4,8 @@ db.sql
 composer.*
 vendor
 src
+*.tfstate
+*.tfstate.*
+.terraform
+.terraform.*
+*.tfvars
