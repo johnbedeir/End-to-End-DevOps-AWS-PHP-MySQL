@@ -1,7 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: my-ingress
+  name: tms-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
   - http:
