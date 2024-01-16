@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: users-service
+  namespace: tms-app
 spec:
   replicas: 2
   selector:
@@ -14,17 +15,26 @@ spec:
     spec:
       containers:
       - name: users-service
-        image: triple3a/tms-users:latest
+        image: 702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-users-img:latest
         ports:
         - containerPort: 80
         env:
           - name: DB_HOST
-            value: mysql-service
+            valueFrom:
+              secretKeyRef:
+                name: rds-endpoint
+                key: endpoint
           - name: DB_USER
-            value: root
+            valueFrom:
+              secretKeyRef:
+                name: rds-username
+                key: username
           - name: DB_PASS
-            value: password
-          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: rds-password
+                key: password
+          - name: DB_DATABASE
             value: task_manager
 ---
 apiVersion: v1
@@ -34,6 +44,7 @@ metadata:
 spec:
   selector:
     app: users-service
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 80

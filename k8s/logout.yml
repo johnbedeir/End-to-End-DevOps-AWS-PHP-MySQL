@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: logout
-        image: triple3a/tms-logout:latest
+        image: 702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-logout-img:latest
         ports:
         - containerPort: 80
 ---
@@ -25,6 +25,7 @@ metadata:
 spec:
   selector:
     app: logout
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 80
