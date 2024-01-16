@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-db-tables
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-init
+        image: 702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-mysql-job-img:latest
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: rds-endpoint
+                key: endpoint
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: rds-username
+                key: username
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: rds-password
+                key: password
+          - name: DB_DATABASE
+            value: task_manager
+      restartPolicy: Never
+  backoffLimit: 4
