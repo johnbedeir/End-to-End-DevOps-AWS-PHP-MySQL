@@ -14,7 +14,6 @@ COPY includes /var/www/html/includes/
 COPY pages/login.php /var/www/html/pages/
 COPY pages/register.php /var/www/html/pages/
 COPY pages/dashboard.php /var/www/html/pages/
-COPY pages/logout.php /var/www/html/pages/
 COPY composer.json composer.lock* /var/www/html/
 COPY .env /var/www/html
 
