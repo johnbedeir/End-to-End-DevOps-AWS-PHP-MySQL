@@ -1,5 +1,3 @@
-# Make sure to update YOUR_DOMAIN to match the build.sh script
-
 variable "kube_monitoring_stack_values" {
   type    = string
   default = <<-EOF
