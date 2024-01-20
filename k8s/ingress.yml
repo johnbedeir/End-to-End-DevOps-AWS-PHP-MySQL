@@ -22,7 +22,7 @@ spec:
             name: users-service
             port:
               number: 80
-      - path: /pages/
+      - path: /pages/logout.php
         pathType: Prefix
         backend:
           service:
