@@ -44,32 +44,4 @@ function checkLogin($username, $password) {
     return password_verify($password, $hashed_password);
 }
 
-// Add Task
-function addTask($userId, $title, $description) {
-    global $conn;
-
-    try {
-        $stmt = $conn->prepare("INSERT INTO tasks (user_id, title, description) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $userId, $title, $description);
-        
-        if ($stmt->execute()) {
-            $stmt->close();
-            return true;
-        } else {
-            return "Failed to add task: " . $stmt->error;
-        }
-    } catch (mysqli_sql_exception $e) {
-        error_log('Error occurred: ' . $e->getMessage());  // Log error
-        return "An error occurred while adding the task.";
-    }
-}
-
-function deleteTask($taskId) {
-    // Function to delete a task. Add your code here.
-}
-
-function editTask($taskId, $newTask, $newDueDate) {
-    // Function to edit an existing task. Add your code here.
-}
-
 ?>
