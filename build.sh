@@ -23,6 +23,10 @@ job_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$mysql_job_img:latest
 # K8s
 namespace="tms-app"
 monitoring_ns="monitoring"
+jenkins_ns="jenkins"
+jenkins_service_name="jenkins"
+argo_ns="argocd"
+argo_service_name="argocd-server"
 ingress_service_name="tms-ingress"
 alertmanager_service_name="kube-prometheus-stack-alertmanager"
 prometheus_service_name="kube-prometheus-stack-prometheus"
@@ -32,7 +36,7 @@ grafana_service_name="kube-prometheus-stack-grafana"
 # update helm repos
 helm repo update
 
-create the cluster
+# create the cluster
 echo "--------------------Creating EKS--------------------"
 echo "--------------------Creating ECR--------------------"
 echo "--------------------Creating EBS--------------------"
@@ -93,15 +97,22 @@ sleep 60s
 # Get ingress URL
 echo "--------------------Application LoadBalancer URL--------------------"
 kubectl get ingress -n ${namespace} ${ingress_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-
-echo" "
-echo "-------------------- Alertmanager LoadBalancer URL--------------------"
-kubectl get svc -n ${monitoring_ns} ${alertmanager_service_name} -o=custom-columns=EXTERNAL-IP:.status.loadBalancer.ingress[*].hostname | tail -n +2
-echo "--------------------Prometheus LoadBalancer URL--------------------"
-kubectl get svc -n ${monitoring_ns} ${prometheus_service_name} -o=custom-columns=EXTERNAL-IP:.status.loadBalancer.ingress[*].hostname | tail -n +2
-echo "--------------------Grafana LoadBalancer URL--------------------"
-kubectl get svc -n ${monitoring_ns} ${grafana_service_name} -o=custom-columns=EXTERNAL-IP:.status.loadBalancer.ingress[*].hostname | tail -n +2
-
+echo " "
+echo "-------------------- Jenkins URL--------------------"
+kubectl get svc -n ${jenkins_ns} ${jenkins_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+echo " "
+echo "-------------------- ArgoCD URL--------------------"
+kubectl get svc -n ${argo_ns} ${argo_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+echo " "
+echo "-------------------- Alertmanager URL--------------------"
+kubectl get svc -n ${monitoring_ns} ${alertmanager_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+echo " "
+echo "--------------------Prometheus URL--------------------"
+kubectl get svc -n ${monitoring_ns} ${prometheus_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+echo " "
+echo "--------------------Grafana URL--------------------"
+kubectl get svc -n ${monitoring_ns} ${grafana_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+echo " "
 # Get RDS endpoint URL
 echo "--------------------RDS endpoint URL--------------------"
 echo $rds_endpoint
