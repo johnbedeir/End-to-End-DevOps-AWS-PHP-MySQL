@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variables
+        REPOSITORY_URI = '702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-frontend-img'
+        IMAGE_TAG = 'latest'
+        AWS_REGION = 'eu-west-1'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Login to AWS ECR') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+                    sh 'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -f task-management-system/frontend.Dockerfile -t $REPOSITORY_URI:$IMAGE_TAG task-management-system/'
+            }
+        }
+
+        stage('Push Docker Image to ECR') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+                    sh 'docker push $REPOSITORY_URI:$IMAGE_TAG'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker rmi $REPOSITORY_URI:$IMAGE_TAG'
+        }
+    }
+}
