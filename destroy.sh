@@ -17,7 +17,7 @@ frontend_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$frontend_img:la
 users_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$users_img:latest"
 logout_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$logout_img:latest"
 job_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$mysql_job_img:latest"
-rds_snapshot_name=$(terraform output -raw final_snapshot_name)
+rds_snapshot_name="rds-cluster-snapshot"
 
 # remove preious docker images
 echo "--------------------Remove Previous build--------------------"
