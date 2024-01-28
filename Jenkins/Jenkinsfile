@@ -28,11 +28,26 @@ pipeline {
         stage('Push Docker Image to ECR') {
             steps {
                 script {
-                    docker.withRegistry("https://$REPOSITORY_URI", "ecr:eu-central-1:aws-credentials") {
-                        docker.image("$REPOSITORY_URI:$IMAGE_TAG").push()
+                    try {
+                        docker.withRegistry("https://$REPOSITORY_URI", "ecr:us-east-1:credential-id") {
+                            docker.image("$REPOSITORY_URI:$IMAGE_TAG").push()
+                        }
+                    } catch (Exception e) {
+                        echo "Failed to push Docker image: ${e.getMessage()}"
+                        throw e 
                     }
                 }
             }
         }
+
+        // stage('Push Docker Image to ECR') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry("$REPOSITORY_URI", "ecr:eu-central-1:aws-credentials") {
+        //                 docker.image("$REPOSITORY_URI:$IMAGE_TAG").push()
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
