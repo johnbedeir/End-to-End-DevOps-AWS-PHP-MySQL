@@ -1,12 +1,11 @@
 # Create a Secret manager to store the RDS credentials.
 resource "random_password" "password" {
-  length           = 16
-  special          = true
-  override_special = "_%@"
+  length  = 16
+  special = true
 }
 
 resource "aws_secretsmanager_secret" "rds_credentials" {
-  name        = "${var.rds_cluster_name}-dbsecrets"
+  name        = "${var.rds_cluster_name}-rds-secrets"
   description = "RDS DB credentials"
 }
 
