@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        REPOSITORY_URI = '702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-users-img'
-        IMAGE_TAG = 'latest'
-        AWS_REGION = 'eu-central-1'
-        DOCKERFILE_PATH = 'task-management-system'
+        REPOSITORY_URI = "${env.USERS_REPOSITORY_URI}"
+        IMAGE_TAG = "${env.TAG}"
+        AWS_REGION = "${env.REGION}"
+        DOCKERFILE_PATH = "${env.APP_DOCKERFILE_PATH}"
     }
 
     stages {
@@ -19,6 +19,16 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
                     sh 'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI'
+                }
+            }
+        }
+
+        stage('Use .env File') {
+            steps {
+                withCredentials([file(credentialsId: 'env-file-credentials', variable: 'ENV_FILE')]) {
+                    script {
+                        sh 'cp $ENV_FILE $DOCKERFILE_PATH/.env'
+                    }
                 }
             }
         }
