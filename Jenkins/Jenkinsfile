@@ -9,14 +9,6 @@ pipeline {
     }
 
     stages {
-
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh 'apt-get update && apt-get install -y docker.io awscli'
-                }
-            }
-        }
         stage('Checkout') {
             steps {
                 checkout scm
