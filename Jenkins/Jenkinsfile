@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("$REPOSITORY_URI:$IMAGE_TAG", $DOCKERFILE_DIR)
+                    docker.build("$REPOSITORY_URI:$IMAGE_TAG", "$DOCKERFILE_DIR")
                 }
             }
         }
