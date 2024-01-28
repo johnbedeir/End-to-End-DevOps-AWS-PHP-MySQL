@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        REPOSITORY_URI = '$FRONTEND_REPOSITORY_URI'
+        REPOSITORY_URI = $FRONTEND_REPOSITORY_URI
         IMAGE_TAG = 'latest'
-        AWS_REGION = '$REGION'
-        DOCKERFILE_PATH = '$APP_DOCKERFILE_PATH'
+        AWS_REGION = $REGION
+        DOCKERFILE_PATH = $APP_DOCKERFILE_PATH
     }
 
     stages {
