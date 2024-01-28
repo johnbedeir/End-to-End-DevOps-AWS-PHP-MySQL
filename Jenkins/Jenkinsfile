@@ -6,6 +6,7 @@ pipeline {
         REPOSITORY_URI = '702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-frontend-img'
         IMAGE_TAG = 'latest'
         AWS_REGION = 'eu-central-1'
+        DOCKERFILE_DIR = '/task-management-system/frontend.Dockerfile'
     }
 
     stages {
@@ -18,8 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Assuming Dockerfile is in the root of your repository
-                    docker.build("$REPOSITORY_URI:$IMAGE_TAG")
+                    docker.build("$REPOSITORY_URI:$IMAGE_TAG", $DOCKERFILE_DIR)
                 }
             }
         }
