@@ -27,7 +27,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'env-file-credentials', variable: 'ENV_FILE')]) {
                     script {
-                        sh 'cp $ENV_FILE task-management-system/.env'
+                        sh 'cp $ENV_FILE $DOCKERFILE_PATH/.env'
                     }
                 }
             }
