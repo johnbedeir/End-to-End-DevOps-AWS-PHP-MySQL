@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REPOSITORY_URI = "${env.FRONTEND_REPOSITORY_URI}"
-        IMAGE_TAG = 'latest'
+        IMAGE_TAG = "${env.TAG}"
         AWS_REGION = "${env.REGION}"
         DOCKERFILE_PATH = "${env.APP_DOCKERFILE_PATH}"
     }
