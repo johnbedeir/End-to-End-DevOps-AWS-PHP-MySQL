@@ -5,10 +5,18 @@ pipeline {
         // Define environment variables
         REPOSITORY_URI = '702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-frontend-img'
         IMAGE_TAG = 'latest'
-        AWS_REGION = 'eu-west-1'
+        AWS_REGION = 'eu-central-1'
     }
 
     stages {
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh 'sudo apt-get update && sudo apt-get install -y docker.io awscli'
+                }
+            }
+        }
         stage('Checkout') {
             steps {
                 checkout scm
