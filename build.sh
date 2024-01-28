@@ -79,6 +79,7 @@ docker push $job_image_name
 # create namespace
 echo "--------------------creating Namespace--------------------"
 kubectl create ns $namespace || true
+kubectl create ns $argo_ns || true
 
 # add rds endpoint into k8s secrets
 echo "--------------------Create RDS Secrets --------------------"
@@ -97,9 +98,6 @@ sleep 60s
 # Get ingress URL
 echo "--------------------Application LoadBalancer URL--------------------"
 kubectl get ingress -n ${namespace} ${ingress_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-echo " "
-echo "-------------------- Jenkins URL--------------------"
-kubectl get svc -n ${jenkins_ns} ${jenkins_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 echo " "
 echo "-------------------- ArgoCD URL--------------------"
 kubectl get svc -n ${argo_ns} ${argo_service_name} -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
