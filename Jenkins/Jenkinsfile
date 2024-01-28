@@ -15,24 +15,21 @@ pipeline {
             }
         }
 
-        stage('Login to AWS ECR') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
-                    sh 'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI'
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -f task-management-system/frontend.Dockerfile -t $REPOSITORY_URI:$IMAGE_TAG task-management-system/'
+                script {
+                    // Assuming Dockerfile is in the root of your repository
+                    docker.build("$REPOSITORY_URI:$IMAGE_TAG")
+                }
             }
         }
 
         stage('Push Docker Image to ECR') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
-                    sh 'docker push $REPOSITORY_URI:$IMAGE_TAG'
+                script {
+                    docker.withRegistry("https://$REPOSITORY_URI", "ecr:us-east-1:credential-id") {
+                        docker.image("$REPOSITORY_URI:$IMAGE_TAG").push()
+                    }
                 }
             }
         }
