@@ -15,6 +15,7 @@ COPY pages/login.php /var/www/html/pages/
 COPY pages/register.php /var/www/html/pages/
 COPY pages/dashboard.php /var/www/html/pages/
 COPY composer.json composer.lock* /var/www/html/
+COPY .env /var/www/html
 
 RUN apt-get update && apt-get install -y\
     libpng-dev \
