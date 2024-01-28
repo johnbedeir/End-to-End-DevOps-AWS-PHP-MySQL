@@ -46,3 +46,7 @@ output "final_snapshot_name" {
   description = "The name of the final snapshot created when the RDS cluster is deleted"
   value       = aws_rds_cluster.rds_cluster.final_snapshot_identifier
 }
+
+output "jenkins_ec2_ip" {
+  value = aws_instance.jenkins_ec2.public_ip
+}

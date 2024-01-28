@@ -120,3 +120,23 @@ variable "rds_engine_version" {
   type    = string
   default = "8.0.mysql_aurora.3.02.0"
 }
+
+variable "public_key" {
+  description = "ssh public key"
+}
+
+variable "jenkins_ec2_ami" {
+  default = "ami-015c25ad8763b2f11"
+}
+
+variable "jenkins_ec2_type" {
+  default = "t2.medium"
+}
+
+variable "jenkins_ec2_name" {
+  default = "JenkinsServer"
+}
+
+variable "jenkins_ec2_keyname" {
+  default = "jenkins_key"
+}
