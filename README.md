@@ -181,3 +181,96 @@ This guide will walk you through the process of deploying the application on Min
    ```bash
    kubectl delete -f path/to/deployment-or-service.yaml
    ```
+
+Sure, here's how you can extend your existing `README.md` file with the additional information:
+
+---
+
+## 3. Deploying the Application on EKS and RDS
+
+To deploy the application, follow these steps:
+
+### Deployment Script
+
+Run the following script:
+
+```bash
+./build.sh
+```
+
+This script will handle the following tasks:
+
+1. Build EKS, VPC, Subnets, ECR, RDS, and Secret Manager for storing RDS credentials. It also deploys an EC2 instance for Jenkins to handle the CI process.
+2. Deploy a monitoring stack including Prometheus, Grafana, and Alertmanager.
+3. Set up Ingress.
+
+### Deployment Steps
+
+After running the script, follow these steps:
+
+1. Update your local kubeconfig.
+2. Ensure all old Docker images are removed.
+3. Build a new Docker image for each service.
+4. Log in to ECR (Elastic Container Registry).
+5. Push the Docker images to the repositories created on the ECR.
+6. Create namespaces for the application and ArgoCD.
+7. Fetch RDS credentials from the Secret Manager and create Kubernetes secrets with them.
+8. Apply the Kubernetes manifest files.
+9. Reveal the LoadBalancer URL of all the deployed applications.
+
+### Setting Up Jenkins
+
+To set up Jenkins, follow these steps:
+
+1. Initialize a Jenkins EC2 instance.
+2. Connect to the EC2 instance via SSH.
+3. Create a `file.sh` script and copy the contents from `jenkins-provision.sh`. This script installs Jenkins, Docker, and AWS CLI, and reveals the Jenkins default password.
+4. Access Jenkins using the public IP of the EC2 instance (available in the Terraform output).
+5. In Jenkins, navigate to `Manage Jenkins > Manage Plugins` and install the "AWS Credential" plugin.
+6. Go to `Manage Jenkins > Manage Credentials > Global credentials` and add AWS secret key and secret access key. Assign an ID to these credentials.
+7. Add your `.env` file as a secret in Jenkins:
+   - Go to `Credentials → System → Global credentials (unrestricted)`.
+   - Click `Add Credentials`.
+   - Select `Secret file` as the Kind.
+   - Upload your `.env` file.
+   - Assign an ID (e.g., `env-file-credentials`) and optionally add a description.
+   - Save the credentials.
+     <img src="imgs/env.png">
+8. Configure global environment variables in Jenkins:
+
+   - Navigate to `Manage Jenkins > System → Global Properties`.
+   - Tick the `Environment variables` checkbox.
+   - Add the following environment variables with their respective values:
+
+     - `FRONTEND_REPOSITORY_URI`
+     - `LOGOUT_REPOSITORY_URI`
+     - `MYSQL_JOB_REPOSITORY_URI`
+     - `USERS_REPOSITORY_URI`
+     - `TAG`
+     - `REGION`
+     - `APP_DOCKERFILE_PATH`
+     - `MYSQL_JOB_DOCKERFILE_PATH`
+
+      <img src="imgs/env-var.png">
+
+### Set up CI pipelines in Jenkins:
+
+- Create a pipeline for each service
+- Go to the Jenkins Dashboard and click `Add Item`.
+- Create a new pipeline and use SCM.
+- Add the Git repository URL (use credentials if the repository is private).
+- Ensure the branch name and path to the `Jenkinsfile` are correct.
+
+  <img src="imgs/ci.png">
+
+### Setting Up ArgoCD
+
+For ArgoCD setup:
+
+1. Access the ArgoCD interface.
+   - Username: `admin`
+   - Password: Find it in the Kubernetes secrets.
+2. Navigate to `Settings` and connect your Git repository.
+3. Create an application for each service in the ArgoCD dashboard. Make sure to specify the correct path of the Kubernetes YAML file for each.
+
+   <img src="imgs/argo.png">
