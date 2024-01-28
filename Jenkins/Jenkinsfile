@@ -19,6 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh "ls -la ${DOCKERFILE_DIR}"
                     docker.build("$REPOSITORY_URI:$IMAGE_TAG", "$DOCKERFILE_DIR")
                 }
             }
@@ -32,12 +33,6 @@ pipeline {
                     }
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            sh 'docker rmi $REPOSITORY_URI:$IMAGE_TAG'
         }
     }
 }
