@@ -1,0 +1,17 @@
+{
+    "name": "johnydev/task-management-system",
+    "autoload": {
+        "psr-4": {
+            "Johnydev\\TaskManagementSystem\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "johnbedeir",
+            "email": "info@johnydev.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    }
+}
