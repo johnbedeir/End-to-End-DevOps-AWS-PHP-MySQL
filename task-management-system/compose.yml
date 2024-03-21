@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 
 services:
   frontend:
@@ -8,7 +8,7 @@ services:
     container_name: frontend-container
     networks:
       - app-network
-      
+
   users-service:
     build:
       context: .
@@ -24,7 +24,7 @@ services:
     networks:
       - app-network
     depends_on:
-      db: 
+      db:
         condition: service_healthy
 
   logout-service:

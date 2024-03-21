@@ -182,8 +182,6 @@ This guide will walk you through the process of deploying the application on Min
    kubectl delete -f path/to/deployment-or-service.yaml
    ```
 
-Sure, here's how you can extend your existing `README.md` file with the additional information:
-
 ---
 
 ## 3. Deploying the Application on EKS and RDS
