@@ -1,5 +1,7 @@
 # End to End DevOps Project - PHP & MySQL
 
+<img src=imgs/cover.png>
+
 This project demonstrates an end-to-end setup for a PHP and MySQL application, leveraging Apache2 as the web server. Follow these instructions to run the application locally on your Linux machine.
 
 ## Prerequisites
