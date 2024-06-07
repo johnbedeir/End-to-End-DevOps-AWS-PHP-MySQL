@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: users-service
-        image: 702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-users-img:latest
+        image: YOUR_AWS_ID.dkr.ecr.REGION.amazonaws.com/tms-users-img:latest
         ports:
         - containerPort: 80
         env:

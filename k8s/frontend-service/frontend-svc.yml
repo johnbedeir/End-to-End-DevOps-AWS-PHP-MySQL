@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-frontend-img:latest
+        image: YOUR_AWS_ID.dkr.ecr.REGION.amazonaws.com/tms-frontend-img:latest
         ports:
         - containerPort: 80
 ---

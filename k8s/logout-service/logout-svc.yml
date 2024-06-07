@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: logout
-        image: 702551696126.dkr.ecr.eu-central-1.amazonaws.com/tms-logout-img:latest
+        image: YOUR_AWS_ID.dkr.ecr.REGION.amazonaws.com/tms-logout-img:latest
         ports:
         - containerPort: 80
 ---

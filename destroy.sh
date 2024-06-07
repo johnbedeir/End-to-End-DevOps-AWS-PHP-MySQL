@@ -3,8 +3,8 @@
 # Variables
 # AWS
 cluster_name="cluster-1-test"
-region="eu-central-1"
-aws_id="702551696126"
+region="REGION"
+aws_id="YOUR_AWS_ID"
 # Store Terraform output in variables
 cd terraform 
 frontend_img=$(terraform output -raw ecr_app_repository_frontend) 
@@ -13,10 +13,10 @@ logout_img=$(terraform output -raw ecr_app_repository_logout)
 mysql_job_img=$(terraform output -raw ecr_app_repository_mysql)
 cd ..
 # Docker images name
-frontend_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$frontend_img:latest"
-users_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$users_img:latest"
-logout_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$logout_img:latest"
-job_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$mysql_job_img:latest"
+frontend_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$frontend_img:latest"
+users_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$users_img:latest"
+logout_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$logout_img:latest"
+job_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$mysql_job_img:latest"
 rds_snapshot_name="rds-cluster-snapshot"
 
 # remove preious docker images

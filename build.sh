@@ -3,8 +3,8 @@
 # Variables
 # AWS
 cluster_name="cluster-1-test"
-region="eu-central-1"
-aws_id="702551696126"
+region="REGION"
+aws_id="YOUR_AWS_ID"
 # Store Terraform output in variables
 cd terraform 
 frontend_img=$(terraform output -raw ecr_app_repository_frontend) 
@@ -16,10 +16,10 @@ db_username=$(terraform output -raw db_username)
 db_password=$(terraform output -raw db_password)
 cd ..
 # Docker images name
-frontend_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$frontend_img:latest"
-users_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$users_img:latest"
-logout_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$logout_img:latest"
-job_image_name="$aws_id.dkr.ecr.eu-central-1.amazonaws.com/$mysql_job_img:latest"
+frontend_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$frontend_img:latest"
+users_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$users_img:latest"
+logout_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$logout_img:latest"
+job_image_name="$aws_id.dkr.ecr.$region-1.amazonaws.com/$mysql_job_img:latest"
 # K8s
 namespace="tms-app"
 monitoring_ns="monitoring"
@@ -67,7 +67,7 @@ docker build -f k8s/mysql.Dockerfile -t $job_image_name k8s/
 
 # ECR Login
 echo "--------------------Login to ECR--------------------"
-aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $aws_id.dkr.ecr.eu-central-1.amazonaws.com
+aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $aws_id.dkr.ecr.$region-1.amazonaws.com
 
 # push the latest build to dockerhub
 echo "--------------------Pushing Docker Image--------------------"
